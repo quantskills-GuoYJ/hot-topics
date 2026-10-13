@@ -1,7 +1,30 @@
-<!doctype html><html lang="zh"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>热点归档</title>
-<body style="font-family:sans-serif;max-width:600px;margin:2em auto"><h1>历史热点</h1><p><a href="../">← 返回今日</a></p><ul>
-<li><a href="hot-topics-2026-10-13.html">2026-10-13</a></li>
-<li><a href="hot-topics-2026-10-12.html">2026-10-12</a></li>
-<li><a href="hot-topics-2026-10-11.html">2026-10-11</a></li>
-<li><a href="hot-topics-2026-10-10.html">2026-10-10</a></li>
-</ul></body></html>
+<!doctype html><html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>热点归档日历</title><style>*{box-sizing:border-box}body{margin:0;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:#f4f5f7;color:#222}header{background:linear-gradient(135deg,#ff5f6d,#ffc371);color:#fff;padding:20px 16px}header h1{margin:0;font-size:20px}header a{color:#fff}main{max-width:360px;margin:18px auto;padding:0 12px}
+.htcal{background:#fff;border-radius:12px;box-shadow:0 6px 24px rgba(0,0,0,.18);padding:12px;width:280px}
+.htcal-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.htcal-ttl{font-weight:600;color:#333}.htcal-nav{border:0;background:#f0f0f3;border-radius:8px;width:30px;height:30px;font-size:16px;cursor:pointer}
+.htcal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.htcal-w{font-size:12px;color:#999;text-align:center;padding:2px 0}
+.htcal-c{text-align:center;padding:7px 0;border-radius:8px;font-size:14px}
+.htcal-no{color:#ccc}.htcal-has{background:#fff1ec;color:#e5532d;font-weight:600;text-decoration:none}
+.htcal-has:hover{background:#ffd9cc}.htcal-today{outline:2px solid #ff5f6d}.htcal-empty{visibility:hidden}
+.htcal-pop{position:absolute;z-index:50;margin-top:8px;display:none}.htcal-pop.on{display:block}
+.htcal{width:100%}#list{margin-top:16px;font-size:13px;color:#666;text-align:center}</style></head><body><header><h1>📅 历史热点日历</h1><p style="margin:6px 0 0;font-size:13px"><a href="../">← 返回今日</a></p></header><main><div id="cal" class="htcal"></div><div id="list"></div></main><script>var DATES=["2026-10-10", "2026-10-11", "2026-10-12", "2026-10-13"];
+function htCalRender(host,dates,base,ym){
+ var set={};dates.forEach(function(d){set[d]=1});
+ var now=new Date(),ty=now.getFullYear(),tm=now.getMonth()+1,td=now.getDate();
+ if(!ym){var last=dates.length?dates[dates.length-1]:(ty+'-'+('0'+tm).slice(-2));ym=last.slice(0,7)}
+ var y=+ym.slice(0,4),m=+ym.slice(5,7);
+ var first=new Date(y,m-1,1),start=(first.getDay()+6)%7,ndays=new Date(y,m,0).getDate();
+ var h='<div class="htcal-top"><button type="button" class="htcal-nav" data-ym="'+htPrev(y,m)+'">‹</button><span class="htcal-ttl">'+y+' 年 '+m+' 月</span><button type="button" class="htcal-nav" data-ym="'+htNext(y,m)+'">›</button></div>';
+ h+='<div class="htcal-grid">';['一','二','三','四','五','六','日'].forEach(function(w){h+='<div class="htcal-w">'+w+'</div>'});
+ for(var i=0;i<start;i++)h+='<div class="htcal-c htcal-empty"></div>';
+ for(var d=1;d<=ndays;d++){var ds=y+'-'+('0'+m).slice(-2)+'-'+('0'+d).slice(-2);
+  var isToday=(y===ty&&m===tm&&d===td);var cls='htcal-c'+(isToday?' htcal-today':'');
+  if(set[ds])h+='<a class="'+cls+' htcal-has" href="'+base+'hot-topics-'+ds+'.html">'+d+'</a>';
+  else h+='<div class="'+cls+' htcal-no">'+d+'</div>';}
+ h+='</div>';host.innerHTML=h;
+ [].forEach.call(host.querySelectorAll('.htcal-nav'),function(b){b.onclick=function(e){e.preventDefault();e.stopPropagation();htCalRender(host,dates,base,b.dataset.ym)}});
+}
+function htPrev(y,m){m--;if(m<1){m=12;y--}return y+'-'+('0'+m).slice(-2)}
+function htNext(y,m){m++;if(m>12){m=1;y++}return y+'-'+('0'+m).slice(-2)}
+htCalRender(document.getElementById("cal"),DATES,"",null);document.getElementById("list").textContent="共 "+DATES.length+" 天归档；点亮的日期可点击直达。";</script></body></html>
