@@ -143,6 +143,7 @@ function deco(){var l=document.getElementById('fav-list');if(!l)return;[].forEac
 window.addEventListener('load',function(){deco();var l=document.getElementById('fav-list');if(l&&window.MutationObserver)new MutationObserver(function(){deco()}).observe(l,{childList:true})});
 })();</script>
 <!-- HOT-TOPICS-DETAIL END -->
+
 <!-- HOT-TOPICS-CAL START --><style>
 .htcal{background:#fff;border-radius:12px;box-shadow:0 6px 24px rgba(0,0,0,.18);padding:12px;width:280px}
 .htcal-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
@@ -153,7 +154,7 @@ window.addEventListener('load',function(){deco();var l=document.getElementById('
 .htcal-no{color:#ccc}.htcal-has{background:#fff1ec;color:#e5532d;font-weight:600;text-decoration:none}
 .htcal-has:hover{background:#ffd9cc}.htcal-today{outline:2px solid #ff5f6d}.htcal-empty{visibility:hidden}
 .htcal-pop{position:absolute;z-index:50;margin-top:8px;display:none}.htcal-pop.on{display:block}
-</style><div id="htCalPop" class="htcal-pop"><div class="htcal"></div></div><script>var HTDATES=["2026-10-10", "2026-10-11", "2026-10-12", "2026-10-13", "2026-10-14", "2026-10-15", "2026-10-16", "2026-10-17", "2026-10-18", "2026-10-19"],HTBASE="";
+</style><div id="htCalPop" class="htcal-pop"><div class="htcal"></div></div><script>var HTDATES=["2026-10-10", "2026-10-11", "2026-10-12", "2026-10-13", "2026-10-14", "2026-10-15", "2026-10-16", "2026-10-17", "2026-10-18", "2026-10-19", "2026-10-20"],HTBASE="";
 function htCalRender(host,dates,base,ym){
  var set={};dates.forEach(function(d){set[d]=1});
  var now=new Date(),ty=now.getFullYear(),tm=now.getMonth()+1,td=now.getDate();
