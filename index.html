@@ -182,6 +182,36 @@ try{if(location.hash==='#fav')tb.click()}catch(e){}
 })();
 </script>
 <!-- HOT-TOPICS-FAVORITES v2 END -->
+<!-- HOT-TOPICS-CAL START --><style>
+.htcal{background:#fff;border-radius:12px;box-shadow:0 6px 24px rgba(0,0,0,.18);padding:12px;width:280px}
+.htcal-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.htcal-ttl{font-weight:600;color:#333}.htcal-nav{border:0;background:#f0f0f3;border-radius:8px;width:30px;height:30px;font-size:16px;cursor:pointer}
+.htcal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.htcal-w{font-size:12px;color:#999;text-align:center;padding:2px 0}
+.htcal-c{text-align:center;padding:7px 0;border-radius:8px;font-size:14px}
+.htcal-no{color:#ccc}.htcal-has{background:#fff1ec;color:#e5532d;font-weight:600;text-decoration:none}
+.htcal-has:hover{background:#ffd9cc}.htcal-today{outline:2px solid #ff5f6d}.htcal-empty{visibility:hidden}
+.htcal-pop{position:absolute;z-index:50;margin-top:8px;display:none}.htcal-pop.on{display:block}
+</style><div id="htCalPop" class="htcal-pop"><div class="htcal"></div></div><script>var HTDATES=["2026-10-10", "2026-10-11", "2026-10-12", "2026-10-13", "2026-10-14", "2026-10-15", "2026-10-16", "2026-10-17", "2026-10-18", "2026-10-19", "2026-10-20", "2026-10-21", "2026-10-22", "2026-10-23", "2026-10-24", "2026-10-25", "2026-10-26", "2026-10-27", "2026-10-28", "2026-10-29"],HTBASE="archive/";
+function htCalRender(host,dates,base,ym){
+ var set={};dates.forEach(function(d){set[d]=1});
+ var now=new Date(),ty=now.getFullYear(),tm=now.getMonth()+1,td=now.getDate();
+ if(!ym){var last=dates.length?dates[dates.length-1]:(ty+'-'+('0'+tm).slice(-2));ym=last.slice(0,7)}
+ var y=+ym.slice(0,4),m=+ym.slice(5,7);
+ var first=new Date(y,m-1,1),start=(first.getDay()+6)%7,ndays=new Date(y,m,0).getDate();
+ var h='<div class="htcal-top"><button type="button" class="htcal-nav" data-ym="'+htPrev(y,m)+'">‹</button><span class="htcal-ttl">'+y+' 年 '+m+' 月</span><button type="button" class="htcal-nav" data-ym="'+htNext(y,m)+'">›</button></div>';
+ h+='<div class="htcal-grid">';['一','二','三','四','五','六','日'].forEach(function(w){h+='<div class="htcal-w">'+w+'</div>'});
+ for(var i=0;i<start;i++)h+='<div class="htcal-c htcal-empty"></div>';
+ for(var d=1;d<=ndays;d++){var ds=y+'-'+('0'+m).slice(-2)+'-'+('0'+d).slice(-2);
+  var isToday=(y===ty&&m===tm&&d===td);var cls='htcal-c'+(isToday?' htcal-today':'');
+  if(set[ds])h+='<a class="'+cls+' htcal-has" href="'+base+'hot-topics-'+ds+'.html">'+d+'</a>';
+  else h+='<div class="'+cls+' htcal-no">'+d+'</div>';}
+ h+='</div>';host.innerHTML=h;
+ [].forEach.call(host.querySelectorAll('.htcal-nav'),function(b){b.onclick=function(e){e.preventDefault();e.stopPropagation();htCalRender(host,dates,base,b.dataset.ym)}});
+}
+function htPrev(y,m){m--;if(m<1){m=12;y--}return y+'-'+('0'+m).slice(-2)}
+function htNext(y,m){m++;if(m>12){m=1;y++}return y+'-'+('0'+m).slice(-2)}
+(function(){var btn=document.getElementById("htArchBtn"),pop=document.getElementById("htCalPop");if(!btn||!pop)return;var host=pop.querySelector(".htcal");var built=false;btn.addEventListener("click",function(e){e.preventDefault();e.stopPropagation();if(!built){htCalRender(host,HTDATES,HTBASE,null);built=true}var r=btn.getBoundingClientRect();pop.style.left=Math.max(8,Math.min(r.left+window.scrollX,window.innerWidth-296))+"px";pop.style.top=(r.bottom+window.scrollY)+"px";pop.classList.toggle("on")});document.addEventListener("click",function(e){if(pop.classList.contains("on")&&!pop.contains(e.target)&&e.target!==btn)pop.classList.remove("on")});})();</script><!-- HOT-TOPICS-CAL END -->
 <!-- HOT-TOPICS-DETAIL START -->
 <style>.ttl{color:#222}.ttl:hover{color:#3461d1;text-decoration:underline}.ttl-s{font-size:11px;color:#999;margin-left:6px;font-weight:400}
 .dt-tg{border:1px solid #c9d6ff;background:#f3f6ff;color:#3461d1;border-radius:14px;padding:3px 10px;font-size:13px;cursor:pointer;margin-right:6px}
@@ -203,34 +233,4 @@ function deco(){var l=document.getElementById('fav-list');if(!l)return;[].forEac
  if(a&&!h.querySelector('a')){h.innerHTML='<a class="ttl" href="'+e(a.href)+'" target="_blank" rel="noopener">'+e(h.textContent)+'</a>'}var b=document.createElement('button');b.className='dt-tg';b.type='button';b.textContent='展开详情 ▾';var s=c.querySelector('.fav-sub');c.insertBefore(b,a||s||null)})}
 window.addEventListener('load',function(){deco();var l=document.getElementById('fav-list');if(l&&window.MutationObserver)new MutationObserver(function(){deco()}).observe(l,{childList:true})});
 })();</script>
-<!-- HOT-TOPICS-DETAIL END --><!-- HOT-TOPICS-CAL START --><style>
-.htcal{background:#fff;border-radius:12px;box-shadow:0 6px 24px rgba(0,0,0,.18);padding:12px;width:280px}
-.htcal-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
-.htcal-ttl{font-weight:600;color:#333}.htcal-nav{border:0;background:#f0f0f3;border-radius:8px;width:30px;height:30px;font-size:16px;cursor:pointer}
-.htcal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
-.htcal-w{font-size:12px;color:#999;text-align:center;padding:2px 0}
-.htcal-c{text-align:center;padding:7px 0;border-radius:8px;font-size:14px}
-.htcal-no{color:#ccc}.htcal-has{background:#fff1ec;color:#e5532d;font-weight:600;text-decoration:none}
-.htcal-has:hover{background:#ffd9cc}.htcal-today{outline:2px solid #ff5f6d}.htcal-empty{visibility:hidden}
-.htcal-pop{position:absolute;z-index:50;margin-top:8px;display:none}.htcal-pop.on{display:block}
-</style><div id="htCalPop" class="htcal-pop"><div class="htcal"></div></div><script>var HTDATES=["2026-10-10", "2026-10-11", "2026-10-12", "2026-10-13", "2026-10-14", "2026-10-15", "2026-10-16", "2026-10-17", "2026-10-18", "2026-10-19", "2026-10-20", "2026-10-21", "2026-10-22", "2026-10-23", "2026-10-24", "2026-10-25", "2026-10-26", "2026-10-27", "2026-10-28", "2026-10-29", "2026-10-30"],HTBASE="archive/";
-function htCalRender(host,dates,base,ym){
- var set={};dates.forEach(function(d){set[d]=1});
- var now=new Date(),ty=now.getFullYear(),tm=now.getMonth()+1,td=now.getDate();
- if(!ym){var last=dates.length?dates[dates.length-1]:(ty+'-'+('0'+tm).slice(-2));ym=last.slice(0,7)}
- var y=+ym.slice(0,4),m=+ym.slice(5,7);
- var first=new Date(y,m-1,1),start=(first.getDay()+6)%7,ndays=new Date(y,m,0).getDate();
- var h='<div class="htcal-top"><button type="button" class="htcal-nav" data-ym="'+htPrev(y,m)+'">‹</button><span class="htcal-ttl">'+y+' 年 '+m+' 月</span><button type="button" class="htcal-nav" data-ym="'+htNext(y,m)+'">›</button></div>';
- h+='<div class="htcal-grid">';['一','二','三','四','五','六','日'].forEach(function(w){h+='<div class="htcal-w">'+w+'</div>'});
- for(var i=0;i<start;i++)h+='<div class="htcal-c htcal-empty"></div>';
- for(var d=1;d<=ndays;d++){var ds=y+'-'+('0'+m).slice(-2)+'-'+('0'+d).slice(-2);
-  var isToday=(y===ty&&m===tm&&d===td);var cls='htcal-c'+(isToday?' htcal-today':'');
-  if(set[ds])h+='<a class="'+cls+' htcal-has" href="'+base+'hot-topics-'+ds+'.html">'+d+'</a>';
-  else h+='<div class="'+cls+' htcal-no">'+d+'</div>';}
- h+='</div>';host.innerHTML=h;
- [].forEach.call(host.querySelectorAll('.htcal-nav'),function(b){b.onclick=function(e){e.preventDefault();e.stopPropagation();htCalRender(host,dates,base,b.dataset.ym)}});
-}
-function htPrev(y,m){m--;if(m<1){m=12;y--}return y+'-'+('0'+m).slice(-2)}
-function htNext(y,m){m++;if(m>12){m=1;y++}return y+'-'+('0'+m).slice(-2)}
-(function(){var btn=document.getElementById("htArchBtn"),pop=document.getElementById("htCalPop");if(!btn||!pop)return;var host=pop.querySelector(".htcal");var built=false;btn.addEventListener("click",function(e){e.preventDefault();e.stopPropagation();if(!built){htCalRender(host,HTDATES,HTBASE,null);built=true}var r=btn.getBoundingClientRect();pop.style.left=Math.max(8,Math.min(r.left+window.scrollX,window.innerWidth-296))+"px";pop.style.top=(r.bottom+window.scrollY)+"px";pop.classList.toggle("on")});document.addEventListener("click",function(e){if(pop.classList.contains("on")&&!pop.contains(e.target)&&e.target!==btn)pop.classList.remove("on")});})();</script><!-- HOT-TOPICS-CAL END -->
-</body></html>
+<!-- HOT-TOPICS-DETAIL END --></body></html>
